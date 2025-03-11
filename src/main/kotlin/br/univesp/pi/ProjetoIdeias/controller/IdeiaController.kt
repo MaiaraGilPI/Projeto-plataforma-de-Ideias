@@ -1,9 +1,8 @@
 package br.univesp.pi.ProjetoIdeias.controller
 
-import br.univesp.pi.ProjetoIdeias.model.AddIdeiaDto
-import br.univesp.pi.ProjetoIdeias.model.GetIdeiaDto
-import br.univesp.pi.ProjetoIdeias.model.IdeiaMapper
+import br.univesp.pi.ProjetoIdeias.model.*
 import br.univesp.pi.ProjetoIdeias.repository.IdeiaRepository
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,16 +13,9 @@ import org.springframework.web.bind.annotation.*
 class IdeiaController {
     @Autowired
     private lateinit var ideiaRepository: IdeiaRepository
+
     @Autowired
     private lateinit var ideiaMapper: IdeiaMapper
-
-    @PostMapping()
-    fun addNewIdeia(
-        @RequestBody addIdeiaDto: AddIdeiaDto
-    ): ResponseEntity<Any> {
-        ideiaRepository.save(ideiaMapper.addIdeiaDtoToIdeia(addIdeiaDto))
-        return ResponseEntity<Any>(HttpStatus.CREATED)
-    }
 
     @GetMapping()
     @ResponseBody
@@ -31,8 +23,7 @@ class IdeiaController {
         return ResponseEntity<Iterable<GetIdeiaDto>>(
             ideiaRepository.findAll().map {
                 ideiaMapper.ideiaToGetIdeiaDto(it)
-            },
-            HttpStatus.OK
+            }, HttpStatus.OK
         )
     }
 
@@ -44,8 +35,35 @@ class IdeiaController {
         return ResponseEntity<GetIdeiaDto?>(
             ideiaMapper.ideiaToGetIdeiaDto(
                 ideiaRepository.findById(id).get()
-            ),
-            HttpStatus.OK
+            ), HttpStatus.OK
+        )
+    }
+
+    @PostMapping()
+    fun addNewIdeia(
+        @RequestBody addIdeiaDto: AddIdeiaDto
+    ): ResponseEntity<Any> {
+        ideiaRepository.save(ideiaMapper.addIdeiaDtoToIdeia(addIdeiaDto))
+        return ResponseEntity<Any>(HttpStatus.CREATED)
+    }
+
+    @PatchMapping("/{id}")
+    fun updateIdeia(
+        @PathVariable(value = "id") id: Long, @RequestBody updateIdeiaDto: UpdateIdeiaDto,
+    ): ResponseEntity<Any> {
+        val ideia = ideiaRepository.findById(id).orElseThrow { EntityNotFoundException() }
+        return ResponseEntity<Any>(
+            ideiaRepository.save(ideiaMapper.updateIdeia(ideia, updateIdeiaDto)), HttpStatus.OK
+        )
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteIdeia(
+        @PathVariable(value = "id") id: Long
+    ): ResponseEntity<Any> {
+        val ideia = ideiaRepository.findById(id).orElseThrow { EntityNotFoundException() }
+        return ResponseEntity<Any>(
+            ideiaRepository.save(ideiaMapper.deleteIdeia(ideia, DeleteIdeiaDto())), HttpStatus.OK
         )
     }
 }

@@ -1,9 +1,6 @@
 package br.univesp.pi.ProjetoIdeias.model
 
-data class AddIdeiaDto(
-    val nomeCompleto: String,
-    val email: String,
-    val telefone: String?,
+data class UpdateIdeiaDto(
     val tituloProjeto: String,
     val descricaoIdeia: String,
     val comoConheceu: String?,

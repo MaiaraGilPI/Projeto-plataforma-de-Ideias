@@ -1,43 +1,45 @@
 package br.univesp.pi.ProjetoIdeias.model
 
 import jakarta.persistence.*
-import java.util.*
+import org.springframework.data.annotation.CreatedDate
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "formulario_ideias")
-open class Ideia {
+class Ideia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    open var id: Long? = null
+    var id: Long? = null
 
-    @Column(name = "nome_completo")
-    open var nomeCompleto: String? = null
+    @Column(name = "nome_completo", length = 100)
+    var nomeCompleto: String? = null
 
-    @Column(name = "email")
-    open var email: String? = null
+    @Column(name = "email", length = 100)
+    var email: String? = null
 
-    @Column(name = "telefone")
-    open var telefone: String? = null
+    @Column(name = "telefone", nullable = true, length = 20)
+    var telefone: String? = null
 
-    @Column(name = "titulo_projeto")
-    open var tituloProjeto: String? = null
+    @Column(name = "titulo_projeto", length = 200)
+    var tituloProjeto: String? = null
 
     @Column(name = "descricao_ideia")
-    open var descricaoIdeia: String? = null
+    var descricaoIdeia: String? = null
 
-    @Column(name = "como_conheceu")
-    open var comoConheceu: String? = null
+    @Column(name = "como_conheceu", nullable = true, length = 200)
+    var comoConheceu: String? = null
 
-    @Column(name = "participar_clube")
-    open var participarClube: Boolean? = null
+    @Column(name = "participar_clube", nullable = true)
+    var participarClube: Boolean? = null
 
-    @Column(name = "data_envio")
-    open var dataEnvio: Date? = null
+    @CreatedDate
+    @Column(name = "data_envio", nullable = true)
+    var dataEnvio: LocalDateTime? = null
 
-    @Column(name = "foi_apagado")
-    open var foiApagado: Boolean? = null
+    @Column(name = "foi_apagado", nullable = true)
+    var foiApagado: Boolean? = null
 
-    @Column(name = "data_apagado")
-    open var dataApagado: Date? = null
+    @Column(name = "data_apagado", nullable = true)
+    var dataApagado: LocalDateTime? = null
 }
