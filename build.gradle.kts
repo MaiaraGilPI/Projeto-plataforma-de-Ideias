@@ -1,6 +1,7 @@
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
+	kotlin("jvm") version "2.1.10"
+	kotlin("kapt") version "2.1.10"
+	kotlin("plugin.spring") version "2.1.10"
 	war
 	id("org.springframework.boot") version "3.4.3"
 	id("io.spring.dependency-management") version "1.1.7"
@@ -28,6 +29,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation("org.mapstruct:mapstruct:1.6.3")
+	kapt("org.mapstruct:mapstruct-processor:1.6.3")
 }
 
 kotlin {
